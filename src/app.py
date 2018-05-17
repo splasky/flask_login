@@ -1,16 +1,14 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
-# Last modified: 2018-05-17 20:53:15
+# Last modified: 2018-05-17 21:05:44
 
-from flask import (Flask, request, session, g, redirect, url_for, abort,
-                   render_template, flash)
-from flask import json
 import logging
-import os
 import sys
+from flask import (Flask, request, render_template)
+from flask import json
 from flaskext.mysql import MySQL
-from werkzeug import generate_password_hash, check_password_hash
+from werkzeug import generate_password_hash
 
 
 mysql = MySQL()
