@@ -76,13 +76,7 @@ def signUp():
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    # To allow aptana to receive errors, set use_debugger=False
-    if app.debug:
-        use_debugger = True
     try:
-        # Disable Flask's debugger if external debugger is requested
-        use_debugger = not(app.config.get('DEBUG_WITH_APTANA'))
-        app.run(use_debugger=use_debugger, debug=app.debug,
-                use_reloader=use_debugger, host='0.0.0.0')
+        app.run()
     except:
         PrintException()
