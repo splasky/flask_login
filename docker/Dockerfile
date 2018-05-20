@@ -15,14 +15,14 @@ RUN pip3 install -r ./requirements.txt
 RUN pip3 install flask-mysql
 
 # Create symbolic link
-ln -sT ~/flask_login /var/www/apache-flask/flask_login
+RUN ln -sT ~/flask_login /var/www/apache-flask/flask_login
 # Copy over the apache configuration file and enable the site
-ln -sT ./flask_login.conf /etc/apache2/sites-available/
+RUN ln -sT ./flask_login.conf /etc/apache2/sites-available/
 RUN a2ensite flask_login
 RUN a2enmod headers
 
 # Copy over the wsgi file
-ln -sT ./flask_login.wsgi /var/www/apache-flask/
+RUN ln -sT ./flask_login.wsgi /var/www/apache-flask/
 
 RUN a2dissite 000-default.conf
 RUN a2ensite flask_login.conf
