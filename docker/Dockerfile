@@ -14,13 +14,15 @@ RUN pipenv freeze > ./requirements.txt
 RUN pip3 install -r ./requirements.txt
 RUN pip3 install flask-mysql
 
+# Create symbolic link
+ln -sT ~/flask_login /var/www/apache-flask/flask_login
 # Copy over the apache configuration file and enable the site
-COPY ./flask_login.conf /etc/apache2/sites-available/
+ln -sT ./flask_login.conf /etc/apache2/sites-available/
 RUN a2ensite flask_login
 RUN a2enmod headers
 
 # Copy over the wsgi file
-COPY ./flask_login.wsgi /var/www/apache-flask/
+ln -sT ./flask_login.wsgi /var/www/apache-flask/
 
 RUN a2dissite 000-default.conf
 RUN a2ensite flask_login.conf
