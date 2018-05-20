@@ -1,12 +1,6 @@
-lora_post
+A simple login with flask
 ===
 # How to use
-install prequest firsrt
-```
-make install_requirements
-make init
-```
-# running
 ```
 make run
 ```
