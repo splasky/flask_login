@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
-# Last modified: 2018-05-19 23:38:54
+# Last modified: 2018-05-21 11:25:12
 
 import logging
 import sys
@@ -41,6 +41,38 @@ def showSignUp():
     return render_template('signup.html')
 
 
+@app.route('/showLogIn')
+def showSignIn():
+    return render_template('login.html')
+
+
+@app.route('/logIn', methods=['POST'])
+def signIn():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    try:
+        _name = request.form.get('inputName', None)
+        _password = request.form.get('inputPassword', None)
+
+        if _name and _password:
+            _hashed_password = generate_password_hash(_password)
+            cursor.execute('select user_name, user_password from Accounts where\
+                           user_name={} and\
+                           user_password={}'.format(_name, _hashed_password))
+            data = cursor.fetchall()
+        if len(data) is 0:
+            return json.dumps({'message': 'User login successfully!'})
+        else:
+            return json.dumps({'message': 'User login failed'})
+
+    except Exception as e:
+        PrintException()
+        return json.dumps({'error': str(e)})
+    finally:
+        cursor.close()
+        conn.close()
+
+
 @app.route('/signUp', methods=['POST'])
 def signUp():
     conn = mysql.connect()
@@ -60,7 +92,7 @@ def signUp():
 
             if len(data) is 0:
                 conn.commit()
-                return json.dumps({'message': 'User created successfully !'})
+                return json.dumps({'message': 'User created successfully!'})
             else:
                 return json.dumps({'error': str(data[0])})
         else:
