@@ -1,11 +1,12 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
-# Last modified: 2018-05-21 11:25:12
+# Last modified: 2018-05-29 09:57:13
 
 import logging
 import sys
-from flask import (Flask, request, render_template)
+from flask import (Flask, request, render_template, redirect, url_for,
+                   make_response)
 from flask import json
 from flaskext.mysql import MySQL
 from werkzeug import generate_password_hash
@@ -33,17 +34,20 @@ def PrintException():
 
 @app.route('/')
 def main():
-    return render_template('home.html')
+    user = request.cookies.get('user_name')
+    return render_template('home.html', user=user)
 
 
 @app.route('/showSignUp')
 def showSignUp():
-    return render_template('signup.html')
+    user = request.cookies.get('user_name')
+    return render_template('login.html', user=user)
 
 
 @app.route('/showLogIn')
 def showSignIn():
-    return render_template('login.html')
+    user = request.cookies.get('user_name')
+    return render_template('login.html', user=user)
 
 
 @app.route('/logIn', methods=['POST'])
@@ -61,13 +65,18 @@ def signIn():
                            user_password={}'.format(_name, _hashed_password))
             data = cursor.fetchall()
         if len(data) is 0:
-            return json.dumps({'message': 'User login successfully!'})
+            message = json.dumps({'message': 'User login successfully!'})
+            resp = make_response(redirect(url_for('index')), message)
+            resp.set_cookie('user_name', _name)
+            return resp
         else:
-            return json.dumps({'message': 'User login failed'})
+            message = json.dumps({'message': 'User login failed'})
+            resp = make_response(redirect(url_for('index')), message)
+            return resp
 
     except Exception as e:
         PrintException()
-        return json.dumps({'error': str(e)})
+        return redirect(url_for('index'))
     finally:
         cursor.close()
         conn.close()
@@ -92,15 +101,16 @@ def signUp():
 
             if len(data) is 0:
                 conn.commit()
-                return json.dumps({'message': 'User created successfully!'})
+                message = json.dumps({'message': 'User created successfully!'})
             else:
-                return json.dumps({'error': str(data[0])})
-        else:
-            return json.dumps({'html': '<span>Enter the required fields</span>'})
+                message = json.dumps({'error': str(data[0])})
+        resp = make_response(redirect(url_for('index')), message)
+        resp.set_cookie('user_name', _name)
+        return resp
 
     except Exception as e:
         PrintException()
-        return json.dumps({'error': str(e)})
+        return redirect(url_for('index'))
     finally:
         cursor.close()
         conn.close()
