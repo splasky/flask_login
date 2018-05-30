@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
-# Last modified: 2018-05-29 09:57:13
+# Last modified: 2018-05-30 20:50:14
 
 import logging
 import sys
@@ -60,23 +60,23 @@ def signIn():
 
         if _name and _password:
             _hashed_password = generate_password_hash(_password)
-            cursor.execute('select user_name, user_password from Accounts where\
-                           user_name={} and\
-                           user_password={}'.format(_name, _hashed_password))
+            cursor.execute("select user_name, user_password from Accounts where\
+                           user_name='{}' and\
+                           user_password='{}';".format(_name, _hashed_password))
             data = cursor.fetchall()
         if len(data) is 0:
             message = json.dumps({'message': 'User login successfully!'})
-            resp = make_response(redirect(url_for('index')), message)
+            resp = make_response(redirect(url_for('main')), message)
             resp.set_cookie('user_name', _name)
             return resp
         else:
             message = json.dumps({'message': 'User login failed'})
-            resp = make_response(redirect(url_for('index')), message)
+            resp = make_response(redirect(url_for('main')), message)
             return resp
 
     except Exception as e:
         PrintException()
-        return redirect(url_for('index'))
+        return redirect(url_for('main'))
     finally:
         cursor.close()
         conn.close()
@@ -104,13 +104,13 @@ def signUp():
                 message = json.dumps({'message': 'User created successfully!'})
             else:
                 message = json.dumps({'error': str(data[0])})
-        resp = make_response(redirect(url_for('index')), message)
+        resp = make_response(redirect(url_for('main')), message)
         resp.set_cookie('user_name', _name)
         return resp
 
     except Exception as e:
         PrintException()
-        return redirect(url_for('index'))
+        return redirect(url_for('main'))
     finally:
         cursor.close()
         conn.close()
