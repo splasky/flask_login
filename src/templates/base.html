@@ -15,10 +15,10 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active" ><a class="nav-link" href="{{ url_for('main') }}">Home</a></li>
+                  <li class="nav-item active" ><a class="nav-link" href="{{ WEB_SERVER }}{{ url_for('main') }}">Home</a></li>
                 {% if not user %}
-                <li class="nav-item"><a class="nav-link" href="showLogIn">Sign In</a></li>
-                <li class="nav-item"><a class="nav-link" href="showSignUp">Sign Up</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ WEB_SERVER }}{{ url_for('showSignIn') }}">Sign In</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ WEB_SERVER }}{{ url_for('showSignUp') }}">Sign Up</a></li>
                 {% endif %}
               </ul>
             </div>
