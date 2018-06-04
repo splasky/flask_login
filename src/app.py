@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
-# Last modified: 2018-06-07 15:45:55
+# Last modified: 2018-06-07 15:49:32
 
 import logging
 import sys
@@ -19,7 +19,7 @@ CORS(app)
 # MySQL configurations
 mysql.init_app(app)
 
-handler = logging.FileHandler('app.log', encoding='UTF-8')
+handler = logging.FileHandler('/tmp/app.log', encoding='UTF-8')
 handler.setLevel(logging.DEBUG)
 app.logger.addHandler(handler)
 
@@ -66,12 +66,12 @@ def signIn():
                            user_password='{}';".format(_name, _hashed_password))
             data = cursor.fetchall()
             if len(data) is 0:
-                message = json.dumps({'status': 'success'})
-                resp = make_response(redirect(url_for('main')), message)
-                resp.set_cookie('user_name', _name)
-                resp.headers.add('Access-Control-Allow-Origin', '*')
-                app.logger.debug(message)
-                return resp
+                message = json.dumps({'status': 200})
+                return message
+                #  resp = make_response(redirect(url_for('main')), message)
+                #  resp.set_cookie('user_name', _name)
+                #  app.logger.debug(message)
+                #  return resp
 
         error = 'User accounts or password failed'
         app.logger.debug(message)
@@ -94,7 +94,6 @@ def signUp():
         _name = request.form.get('inputName', None)
         _password = request.form.get('inputPassword', None)
 
-        print(_name, _password)
         # validate the received values
         if _name and _password:
 
@@ -103,10 +102,11 @@ def signUp():
                     values('{}','{}');".format(
                 _name, _hashed_password))
             conn.commit()
-            message = json.dumps({'status': 'success'})
-            resp = make_response(redirect(url_for('main')), message)
-            resp.set_cookie('user_name', _name)
-            return resp
+            message = json.dumps({'status': 200})
+            return message
+            #  resp = make_response(redirect(url_for('main')), message)
+            #  resp.set_cookie('user_name', _name)
+            #  return resp
 
         error = 'User accounts or password failed'
         app.logger.debug(message)

@@ -9,9 +9,7 @@ $(function(){
 			type: 'POST',
 			success: function(response){
 				console.log(response);
-                if(response.status=='success'){
-                    window.location.href = "{{ WEB_SERVER }}{{ url_for('main') }}";
-                }
+                window.location.href = "{{ WEB_SERVER }}{{ url_for('main') }}";
 			},
 			error: function(error){
 				console.log(error);
@@ -29,7 +27,7 @@ $(function(){
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
         <button id="btnLogIn" class="btn btn-lg btn-primary btn-block" type="button">Login</button>
-        {% if {{ error }} %}
+        {% if error %}
             <label>{{ error }}</label>
         {% endif %}
     </form>
