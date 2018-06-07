@@ -1,16 +1,15 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
-# Last modified: 2018-06-07 15:49:32
+# Last modified: 2018-06-07 15:50:38
 
-import logging
 import sys
 from flask import (Flask, request, render_template, redirect, url_for,
                    make_response, flash)
 from flask import json
-from flask_cors import CORS
 from flaskext.mysql import MySQL
 from werkzeug import generate_password_hash
+from config import app
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -123,7 +122,4 @@ def signUp():
 
 
 if __name__ == "__main__":
-    try:
-        app.run(port=5000)
-    except:
-        PrintException()
+    app.run(port=5000)
