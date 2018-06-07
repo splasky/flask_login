@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
-# Last modified: 2018-06-07 15:50:38
+# Last modified: 2018-06-07 16:18:38
 
 import sys
 from flask import (Flask, request, render_template, redirect, url_for,
@@ -11,16 +11,9 @@ from flaskext.mysql import MySQL
 from werkzeug import generate_password_hash
 from config import app
 
-mysql = MySQL()
-app = Flask(__name__)
-CORS(app)
-
 # MySQL configurations
+mysql = MySQL()
 mysql.init_app(app)
-
-handler = logging.FileHandler('/tmp/app.log', encoding='UTF-8')
-handler.setLevel(logging.DEBUG)
-app.logger.addHandler(handler)
 
 
 def PrintException():
